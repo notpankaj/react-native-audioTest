@@ -1,21 +1,15 @@
 import React from 'react';
-import TrackPlayerCOMP from './test/TrackPlayerCOMP';
-import ExpoMediaTest from './test/ExpoMediaTest';
-import MusicPlayer from './test/MusicPlayer';
-import NativeModTest from './test/NativeModTest';
-import Test from './test/Test';
-import TestTP from './test/TestTP';
+import MusicProvider from './app/context/MusicContext';
+import {NavigationContainer} from '@react-navigation/native';
+import MainStack from './app/navigation/MainStack';
 
 const App = () => {
   return (
-    <>
-      {/* <NativeModTest /> */}
-      {/* <ExpoMediaTest /> */}
-      {/* <MusicPlayer /> */}
-      {/* <TrackPlayerCOMP /> */}
-      {/* <Test /> */}
-      <TestTP />
-    </>
+    <NavigationContainer>
+      <MusicProvider>
+        <MainStack />
+      </MusicProvider>
+    </NavigationContainer>
   );
 };
 
