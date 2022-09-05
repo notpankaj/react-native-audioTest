@@ -4,9 +4,9 @@ import {useRoute} from '@react-navigation/native';
 import Slider from '@react-native-community/slider';
 import {MusicContext} from '../../context/MusicContext';
 const PlayerScreen = () => {
-  const {seekTo, pauseSong, playSong} = useContext(MusicContext);
+  const {seekTo, pauseSong, playSong, progresValue} = useContext(MusicContext);
   const {selectedSong} = useRoute().params;
-  console.log(selectedSong);
+  // console.log(selectedSong);
 
   const handleSeek = val => {
     seekTo(val);
@@ -18,6 +18,8 @@ const PlayerScreen = () => {
   const handlePause = () => {
     pauseSong();
   };
+
+  console.log(progresValue, 'FROM COM');
   return (
     <View>
       <Text style={{color: 'black', fontSize: 18}}>
@@ -38,7 +40,7 @@ const PlayerScreen = () => {
           style={{width: 200, height: 40}}
           minimumValue={0}
           maximumValue={selectedSong?.duration}
-          // value={progressVal}
+          value={progresValue}
           minimumTrackTintColor="#FFFFFF"
           maximumTrackTintColor="#000000"
           onSlidingComplete={handleSeek}

@@ -4,6 +4,8 @@ import TrackPlayer, {State} from 'react-native-track-player';
 export const MusicContext = createContext({});
 
 class MusicProvider extends Component {
+  INTERVAL = 'abc';
+
   constructor() {
     super();
     this.state = {
@@ -11,7 +13,12 @@ class MusicProvider extends Component {
       musicStorage: [],
       activeSongIndex: 0,
       activeSongObj: {},
+      progresValue: 0,
     };
+
+    this.playSong = this.playSong.bind(this);
+    this.pauseSong = this.pauseSong.bind(this);
+    this.playSongFormIdx = this.playSongFormIdx.bind(this);
   }
   async getSongsFormDevice() {
     console.log('getSongsFormDevice()');
@@ -43,14 +50,36 @@ class MusicProvider extends Component {
     });
   }
 
+  //  printing
+  printStamp = async () => {
+    console.log('PrintStamp()');
+    // const duration = await TrackPlayer.getDuration();
+    const position = await TrackPlayer.getPosition();
+    // const pV = ((position / duration) * 100) / 100;
+    // console.log(position);
+    this.updateState({progresValue: position});
+    // console.log(this.state.progresValue);
+  };
+
+  printEnable = () => {
+    console.log('printEnable()');
+    // this.updateState({progresValue: 0});
+    this.INTERVAL = setInterval(this.printStamp, 100);
+  };
+
+  printDisable = () => {
+    console.log('printDisable()');
+    if (!this?.INTERVAL) return;
+    this.updateState({progresValue: 0});
+    clearInterval(this.INTERVAL);
+  };
+
+  //
+
   // handle music start
 
   nextSong() {}
   prevSong() {}
-
-  playSong() {
-    TrackPlayer?.play();
-  }
 
   async playSongFormIdx(songIdx) {
     console.log(`playSongFormIdx(${songIdx})`);
@@ -59,14 +88,23 @@ class MusicProvider extends Component {
     try {
       const res1 = await TrackPlayer.skip(songIdx);
       console.log({res1});
-      TrackPlayer?.play();
+      this.playSong();
     } catch (error) {
       console.error(error?.error, 'playSongFormIdx');
     }
   }
+  playSong() {
+    TrackPlayer?.play();
+    console.log('playSong()');
+    this.printEnable();
+  }
+
   pauseSong() {
     TrackPlayer?.pause();
+    console.log('pauseSong()');
+    this.printDisable();
   }
+
   stopSong() {}
 
   seekTo(val) {
@@ -153,6 +191,7 @@ class MusicProvider extends Component {
       pauseSong,
       stopSong,
       updateState,
+
       playSongFormIdx,
     } = this;
 
