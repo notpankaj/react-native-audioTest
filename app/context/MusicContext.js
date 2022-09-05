@@ -44,7 +44,7 @@ class MusicProvider extends Component {
   }
 
   // handle music start
-  seekTo() {}
+
   nextSong() {}
   prevSong() {}
 
@@ -64,8 +64,15 @@ class MusicProvider extends Component {
       console.error(error?.error, 'playSongFormIdx');
     }
   }
-  pauseSong() {}
+  pauseSong() {
+    TrackPlayer?.pause();
+  }
   stopSong() {}
+
+  seekTo(val) {
+    console.log('seekTo()', val);
+    TrackPlayer.seekTo(val);
+  }
   async getQueue() {
     try {
       const q = await TrackPlayer.getQueue();
