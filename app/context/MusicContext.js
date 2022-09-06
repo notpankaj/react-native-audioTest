@@ -14,11 +14,14 @@ class MusicProvider extends Component {
       activeSongIndex: 0,
       activeSongObj: {},
       progresValue: 0,
+      totalNumOfSong: 0, //this from 0 (length of musicStotage
     };
 
     this.playSong = this.playSong.bind(this);
     this.pauseSong = this.pauseSong.bind(this);
     this.playSongFormIdx = this.playSongFormIdx.bind(this);
+    this.updateActiveSong = this.updateActiveSong.bind(this);
+    this.nextSong = this.nextSong.bind(this);
   }
   async getSongsFormDevice() {
     console.log('getSongsFormDevice()');
@@ -35,6 +38,7 @@ class MusicProvider extends Component {
         musicStorage: media?.assets?.map((item, idx) => {
           return {...item, url: item.uri, idx};
         }),
+        totalNumOfSong: media.totalCount,
       });
 
       this.setupTrackPlayer();
@@ -53,17 +57,12 @@ class MusicProvider extends Component {
   //  printing
   printStamp = async () => {
     console.log('PrintStamp()');
-    // const duration = await TrackPlayer.getDuration();
     const position = await TrackPlayer.getPosition();
-    // const pV = ((position / duration) * 100) / 100;
-    // console.log(position);
     this.updateState({progresValue: position});
-    // console.log(this.state.progresValue);
   };
 
   printEnable = () => {
     console.log('printEnable()');
-    // this.updateState({progresValue: 0});
     this.INTERVAL = setInterval(this.printStamp, 100);
   };
 
@@ -74,12 +73,28 @@ class MusicProvider extends Component {
     clearInterval(this.INTERVAL);
   };
 
-  //
+  // update Active Song State
+  updateActiveSong(idx, songObx = {}) {
+    if (!idx) return;
+    this.updateState({activeSongIndex: idx, activeSongObj: songObx});
+  }
 
   // handle music start
-
-  nextSong() {}
-  prevSong() {}
+  async nextSong() {
+    console.log('nextSong()');
+    try {
+      // this.updateActiveSong(
+      //   updatedIndex,
+      //   this.state.musicStorage[updatedIndex],
+      // );
+      await TrackPlayer?.skipToNext();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async prevSong() {
+    await TrackPlayer?.skipToPrevious();
+  }
 
   async playSongFormIdx(songIdx) {
     console.log(`playSongFormIdx(${songIdx})`);
@@ -191,8 +206,8 @@ class MusicProvider extends Component {
       pauseSong,
       stopSong,
       updateState,
-
       playSongFormIdx,
+      updateActiveSong,
     } = this;
 
     const valuePayload = {
@@ -204,6 +219,7 @@ class MusicProvider extends Component {
       stopSong,
       updateState,
       playSongFormIdx,
+      updateActiveSong,
     };
     return (
       <MusicContext.Provider value={{...this.state, ...valuePayload}}>

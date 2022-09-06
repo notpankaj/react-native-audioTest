@@ -4,7 +4,9 @@ import {useRoute} from '@react-navigation/native';
 import Slider from '@react-native-community/slider';
 import {MusicContext} from '../../context/MusicContext';
 const PlayerScreen = () => {
-  const {seekTo, pauseSong, playSong, progresValue} = useContext(MusicContext);
+  const {seekTo, pauseSong, playSong, progresValue, nextSong, prevSong} =
+    useContext(MusicContext);
+  const data = useContext(MusicContext);
   const {selectedSong} = useRoute().params;
   // console.log(selectedSong);
 
@@ -17,6 +19,14 @@ const PlayerScreen = () => {
   };
   const handlePause = () => {
     pauseSong();
+  };
+
+  const handleNext = () => {
+    nextSong();
+  };
+
+  const handlePrev = () => {
+    prevSong();
   };
 
   console.log(progresValue, 'FROM COM');
@@ -50,6 +60,8 @@ const PlayerScreen = () => {
       <View style={{margin: 20}}>
         <Button title="pause" onPress={handlePause} />
         <Button title="play" onPress={handlePlay} />
+        <Button title="next" onPress={handleNext} />
+        <Button title="prev" onPress={handlePrev} />
       </View>
     </View>
   );
