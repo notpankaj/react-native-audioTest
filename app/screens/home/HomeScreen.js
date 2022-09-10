@@ -5,16 +5,12 @@ import {FlashList} from '@shopify/flash-list';
 import {useNavigation} from '@react-navigation/native';
 const HomeScreen = () => {
   const navigation = useNavigation();
-  const {musicStorage, playSongFormIdx, updateActiveSong} =
-    useContext(MusicContext);
+  const {musicStorage, playSongFormIdx} = useContext(MusicContext);
 
   const handleItemPress = async song => {
     console.log(song);
-    navigation.navigate('PlayerScreen', {
-      selectedSong: song,
-    });
+    navigation.navigate('PlayerScreen');
     playSongFormIdx(song.idx);
-    updateActiveSong(song.idx, song);
   };
   return (
     <View style={{flex: 1, padding: 10}}>

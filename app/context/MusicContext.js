@@ -1,6 +1,6 @@
 import React, {Component, createContext} from 'react';
 import * as MediaLibrary from 'expo-media-library';
-import TrackPlayer, {State} from 'react-native-track-player';
+import TrackPlayer, {Event, State} from 'react-native-track-player';
 export const MusicContext = createContext({});
 
 class MusicProvider extends Component {
@@ -20,7 +20,7 @@ class MusicProvider extends Component {
     this.playSong = this.playSong.bind(this);
     this.pauseSong = this.pauseSong.bind(this);
     this.playSongFormIdx = this.playSongFormIdx.bind(this);
-    this.updateActiveSong = this.updateActiveSong.bind(this);
+
     this.nextSong = this.nextSong.bind(this);
   }
   async getSongsFormDevice() {
@@ -73,20 +73,10 @@ class MusicProvider extends Component {
     clearInterval(this.INTERVAL);
   };
 
-  // update Active Song State
-  updateActiveSong(idx, songObx = {}) {
-    if (!idx) return;
-    this.updateState({activeSongIndex: idx, activeSongObj: songObx});
-  }
-
   // handle music start
   async nextSong() {
     console.log('nextSong()');
     try {
-      // this.updateActiveSong(
-      //   updatedIndex,
-      //   this.state.musicStorage[updatedIndex],
-      // );
       await TrackPlayer?.skipToNext();
     } catch (error) {
       console.log(error);
@@ -174,6 +164,7 @@ class MusicProvider extends Component {
     try {
       const addedSongsToTP = await TrackPlayer.add(this.state.musicStorage);
       // console.log({addedSongsToTP});
+      this.addListeners();
 
       this.updateState({isReady: true}); //will add here in the end
     } catch (error) {
@@ -193,11 +184,41 @@ class MusicProvider extends Component {
     this.updateState({isReady: true});
   }
 
+  // listeners
+  addListeners() {
+    console.log('addListeners()');
+    try {
+      TrackPlayer.addEventListener(Event.PlaybackQueueEnded, event => {
+        console.log('Event.PlaybackQueueEnded', event);
+        console.log('Q ENDED');
+      });
+
+      TrackPlayer.addEventListener(Event.PlaybackTrackChanged, event => {
+        console.log('Event.PlaybackTrackChanged', event);
+
+        this.setState({
+          ...this.state,
+          activeSongIndex: event?.nextTrack,
+          activeSongObj: this.state.musicStorage[event?.nextTrack],
+        });
+        console.log('Track Change');
+      });
+    } catch (error) {
+      console.error(error, 'addListener()');
+    }
+  }
+
+  removeListeners() {}
+  // listeners
+
   componentDidMount() {
     this.boot();
   }
 
+  componentWillUnmount() {}
+
   render() {
+    console.log(this.state);
     const {
       seekTo,
       nextSong,
@@ -207,7 +228,6 @@ class MusicProvider extends Component {
       stopSong,
       updateState,
       playSongFormIdx,
-      updateActiveSong,
     } = this;
 
     const valuePayload = {
@@ -219,8 +239,8 @@ class MusicProvider extends Component {
       stopSong,
       updateState,
       playSongFormIdx,
-      updateActiveSong,
     };
+
     return (
       <MusicContext.Provider value={{...this.state, ...valuePayload}}>
         {this.props.children}

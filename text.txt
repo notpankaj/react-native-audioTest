@@ -3,6 +3,18 @@
 "build-r": "cd android && gradlew bundleRelease && cd ..",,
     
 
+play 
+pause 
+next
+prev 
+progressBar
 
-pending
-next and prev btn
+----pending
+
+
+
+story 
+
+1. reading audio files from Device alpha-dog-0.1 
+2. playing music and progressBar alpha-dog-0.2
+3. next and prev pause play    alpha-dog-0.3
