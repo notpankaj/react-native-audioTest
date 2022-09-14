@@ -7,11 +7,11 @@
 #define TIMEOUT_SECONDS 600
 #define TEXT_TO_LOOK_FOR @"Welcome to React"
 
-@interface nativeModTests : XCTestCase
+@interface muXicTests : XCTestCase
 
 @end
 
-@implementation nativeModTests
+@implementation muXicTests
 
 - (BOOL)findSubviewInView:(UIView *)view matching:(BOOL (^)(UIView *view))test
 {
