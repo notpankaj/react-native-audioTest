@@ -3,6 +3,7 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import {MusicContext} from '../../context/MusicContext';
 import {FlashList} from '@shopify/flash-list';
 import {useNavigation} from '@react-navigation/native';
+import {FONTS} from '../../constants';
 const HomeScreen = () => {
   const navigation = useNavigation();
   const {musicStorage, playSongFormIdx} = useContext(MusicContext);
@@ -21,7 +22,12 @@ const HomeScreen = () => {
             <TouchableOpacity
               style={{marginTop: 15}}
               onPress={() => handleItemPress(item)}>
-              <Text style={{color: 'black', fontSize: 18}}>
+              <Text
+                style={{
+                  color: 'black',
+                  fontSize: 18,
+                  fontFamily: FONTS.Regular,
+                }}>
                 {item.filename}
               </Text>
             </TouchableOpacity>
