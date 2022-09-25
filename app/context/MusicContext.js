@@ -224,7 +224,7 @@ class MusicProvider extends Component {
   componentWillUnmount() {}
 
   render() {
-    // console.log(this.state);
+    console.log(this.state);
     const {
       seekTo,
       nextSong,

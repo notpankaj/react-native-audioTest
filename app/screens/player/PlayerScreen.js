@@ -48,7 +48,7 @@ const PlayerScreen = () => {
 
   return (
     <Container>
-      <Text fontSize={35}>now playing</Text>
+      <Text fontSize={'35px'}>now playing</Text>
       <AlbumContainer />
 
       <Slider
