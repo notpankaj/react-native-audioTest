@@ -1,20 +1,23 @@
 import React, {useContext} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, useWindowDimensions} from 'react-native';
 import {MusicContext} from '../../context/MusicContext';
 import {FlashList} from '@shopify/flash-list';
 import {useNavigation} from '@react-navigation/native';
 import {FONTS} from '../../constants';
 const HomeScreen = () => {
   const navigation = useNavigation();
-  const {musicStorage, playSongFormIdx} = useContext(MusicContext);
+  const {width} = useWindowDimensions();
+  const {musicStorage, playSongFormIdx, toggleIsMusicPlaying} =
+    useContext(MusicContext);
 
   const handleItemPress = async song => {
     console.log(song);
     navigation.navigate('PlayerScreen');
     playSongFormIdx(song.idx);
+    toggleIsMusicPlaying(true);
   };
   return (
-    <View style={{flex: 1, padding: 10}}>
+    <View style={{flex: 1, padding: 10, width}}>
       <FlashList
         data={musicStorage}
         renderItem={({item}) => {

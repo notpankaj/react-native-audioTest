@@ -10,6 +10,7 @@ class MusicProvider extends Component {
     super();
     this.state = {
       isReady: false,
+      isMusicPlaying: false,
       musicStorage: [],
       activeSongIndex: 0,
       activeSongObj: {},
@@ -20,6 +21,7 @@ class MusicProvider extends Component {
     this.playSong = this.playSong.bind(this);
     this.pauseSong = this.pauseSong.bind(this);
     this.playSongFormIdx = this.playSongFormIdx.bind(this);
+    this.toggleIsMusicPlaying = this.toggleIsMusicPlaying.bind(this);
 
     this.nextSong = this.nextSong.bind(this);
   }
@@ -53,6 +55,10 @@ class MusicProvider extends Component {
       ...newState,
     });
   }
+
+  toggleIsMusicPlaying = bool => {
+    this.updateState({isMusicPlaying: bool});
+  };
 
   //  printing
   printStamp = async () => {
@@ -218,7 +224,7 @@ class MusicProvider extends Component {
   componentWillUnmount() {}
 
   render() {
-    console.log(this.state);
+    // console.log(this.state);
     const {
       seekTo,
       nextSong,
@@ -228,6 +234,7 @@ class MusicProvider extends Component {
       stopSong,
       updateState,
       playSongFormIdx,
+      toggleIsMusicPlaying,
     } = this;
 
     const valuePayload = {
@@ -239,6 +246,7 @@ class MusicProvider extends Component {
       stopSong,
       updateState,
       playSongFormIdx,
+      toggleIsMusicPlaying,
     };
 
     return (
@@ -250,3 +258,6 @@ class MusicProvider extends Component {
 }
 
 export default MusicProvider;
+
+// duration  // 268.878
+// progresValue // 43.405

@@ -8,4 +8,13 @@ export const FONTS = {
   Thin: 'Poppins-Thin',
 };
 
-export const COLORS = {};
+const ACCENT_COLORS = {
+  green: '#28DF71',
+  red: '#EA1136',
+};
+
+export const COLORS = {
+  bgBlack: '#222222',
+  textWhite: '#F3F3F3',
+  accent: ACCENT_COLORS.red,
+};
